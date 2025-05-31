@@ -58,7 +58,7 @@ foreach(string mostrar in archivos)
     FileInfo informacion = new FileInfo(mostrar);
     string size = informacion.Length.ToString();
     string date = informacion.LastWriteTime.ToString();
-    string[] escribirDatos = {informacion.FullName, size, date};
+    string[] escribirDatos = {informacion.FullName, size, date}; 
     
     using (StreamWriter writer = new StreamWriter(RutaCSV))
     {
