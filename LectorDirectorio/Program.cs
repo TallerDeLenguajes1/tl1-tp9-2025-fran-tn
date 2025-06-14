@@ -52,21 +52,31 @@ if(!File.Exists(RutaCSV))
     File.Create(RutaCSV);
 }
 
-
-foreach(string mostrar in archivos)
+try
 {
-    FileInfo informacion = new FileInfo(mostrar);
-    string size = informacion.Length.ToString();
-    string date = informacion.LastWriteTime.ToString();
-    string[] escribirDatos = {informacion.FullName, size, date}; 
-    
-    using (StreamWriter writer = new StreamWriter(RutaCSV))
+    using (StreamWriter writer = new StreamWriter(RutaCSV, true))
+    //true es para escribir al final del archivo
     {
-        foreach(string datos in escribirDatos)
+        writer.WriteLine("Nombre del archhivo, Tamaño, Fecha de ultima modificacion");
+        //Esto escribira una cabecera
+
+        foreach (string archivo in archivos)
         {
-            writer.WriteLine(string.Join(",", datos) );
+            FileInfo informacion = new FileInfo(archivo);
+            string nombre = informacion.FullName;
+            string tamaño = informacion.Length.ToString();
+            string fecha = informacion.LastWriteTime.ToString("dd-MM-yyyy");
+
+            string linea = $"{nombre}, {tamaño}, {fecha}";
+
+            writer.WriteLine(linea);
         }
     }
-
+    Console.WriteLine($"Archivo CSV modificado exitosamente en {RutaCSV}");
 }
+catch (Exception ex)
+{
+    Console.WriteLine($"Fallo al guardar el archivo en {RutaCSV}: {ex.Message}");    
+}
+
 
